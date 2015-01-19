@@ -43,6 +43,14 @@ message (STATUS  "CBLOSC SHARED LIB: ${AGS_EXAMPLE_CPP_LIB_LIBRARIES}")
 set (DLLS_to_install  ${DLLS_to_install}  ${AGS_EXAMPLE_CPP_LIB_DLLS})
 
 
+# find c-blosc (set hint CBLOSC_ROOT)
+find_package(CBLOSC  REQUIRED)
+include_directories(${CBLOSC_INCLUDE_DIR})
+message (STATUS  "CBLOSC DLLS: ${CBLOSC_DLLS}")
+message (STATUS  "CBLOSC SHARED LIB: ${CBLOSC_LIBRARIES}")
+set (DLLS_to_install  ${DLLS_to_install}  ${CBLOSC_DLLS})
+
+
 # find Boost (set hint BOOST_ROOT)
 set (Boost_USE_STATIC_LIBS  OFF)
 set (Boost_USE_STATIC_RUNTIME  OFF)  # this should always be set to OFF
@@ -74,10 +82,39 @@ set (WORKING_SOURCES  ${WORKING_HPP_SOURCES}  ${WORKING_H_SOURCES}  ${WORKING_CP
 
 # create the target
 add_executable (ags_blosc_compress ${WORKING_SOURCES})
-target_link_libraries (ags_blosc_compress  ${AGS_EXAMPLE_CPP_LIB_LIBRARIES}  
+target_link_libraries (ags_blosc_compress  ${AGS_EXAMPLE_CPP_LIB_LIBRARIES} ${CBLOSC_LIBRARIES} 
                                            ${Boost_LIBRARIES} )
 
 # install the target
 install (TARGETS  ags_blosc_compress  
+         DESTINATION  bin
+         PERMISSIONS  OWNER_EXECUTE  OWNER_READ  OWNER_WRITE)
+
+
+###########################
+#
+#  ags_blosc_decompress target
+#  THIS IS AN EXECUTABLE TARGET
+#
+###########################
+
+# add includes for current target
+set (WORKING_SOURCE_DIR ${CMAKE_SOURCE_DIR}/ags_blosc_decompress)
+include_directories(${WORKING_SOURCE_DIR}/inc)
+
+# add .cpp, .c, .hpp, .h files
+file (GLOB_RECURSE  WORKING_HPP_SOURCES  ${WORKING_SOURCE_DIR}/inc/*.hpp)
+file (GLOB_RECURSE  WORKING_H_SOURCES  ${WORKING_SOURCE_DIR}/inc/*.h)
+file (GLOB_RECURSE  WORKING_CPP_SOURCES  ${WORKING_SOURCE_DIR}/src/*.cpp)
+file (GLOB_RECURSE  WORKING_C_SOURCES  ${WORKING_SOURCE_DIR}/src/*.c)
+set (WORKING_SOURCES  ${WORKING_HPP_SOURCES}  ${WORKING_H_SOURCES}  ${WORKING_CPP_SOURCES}  ${WORKING_C_SOURCES})
+
+# create the target
+add_executable (ags_blosc_decompress ${WORKING_SOURCES})
+target_link_libraries (ags_blosc_decompress  ${AGS_EXAMPLE_CPP_LIB_LIBRARIES} ${CBLOSC_LIBRARIES} 
+                                           ${Boost_LIBRARIES} )
+
+# install the target
+install (TARGETS  ags_blosc_decompress  
          DESTINATION  bin
          PERMISSIONS  OWNER_EXECUTE  OWNER_READ  OWNER_WRITE)

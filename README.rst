@@ -4,32 +4,14 @@ Introduction
 This repo is part of the tutorial found in
 https://github.com/ActivisionGameScience/ags_conda_recipes.git
 
-It contains a single C++ library, ``ags_blosc_wrapper``, that
-is a dumb wrapper around the popular ``c-blosc`` compression
-library (https://github.com/Blosc/c-blosc).
+It contains two C++ executables, ``ags_blosc_compress`` and
+``ags_blosc_decompress``, that link against the ``ags_blosc_wrapper`` library
+found in the repo https://github.com/ActivisionGameScience/ags_example_cpp_lib.git.
 
-The purpose is to demonstrate several techniques:
+The purpose is to demonstrate:
 
-- How to manage external dependencies using ``conda``,
+- How to manage both in-house and third-party dependencies using ``conda``,
   and build using ``cmake``
-
-- How to build both static and dynamic binaries
-
-- How to expose both a C++ and C API using
-  the *opaque pointer* technique
-
-The purpose of the C API (which is a wrapper around
-the C++ code) is to allow other languages to bind
-to this library easily.
-
-In turn, this project serves as a dependency for 
-two other projects described in the tutorial:
-
-- https://github.com/ActivisionGameScience/ags_example_py_wrapper.git
-  (a python wrapper around this library)
-
-- https://github.com/ActivisionGameScience/ags_example_cpp_app.git
-  (a C++ application that builds against this library)
 
 
 How to build
@@ -41,26 +23,26 @@ You can use it to build, publish, and install
 the ``conda`` way.
 
 However, you can also build and install this library by hand.
-Assuming that ``c-blosc`` is installed in the following location::
+Assume that ``ags_example_cpp_lib`` is installed in the following location::
 
-    /some/path/include/blosc.h
-    /some/path/lib/libblosc.so
+    /some/path/include/activision_game_science/*.h
+    /some/path/lib/libags_blosc_wrapper.so
 
-you can build and install with the following commands::
+Assume that ``boost`` and ``c-blosc`` are similarly installed in ``/some/path``.
+Then you can build and install with the following commands::
 
-    git clone https://github.com/ActivisionGameScience/ags_example_cpp_lib.git
-    cd ags_example_cpp_lib
+    git clone https://github.com/ActivisionGameScience/ags_example_cpp_app.git
+    cd ags_example_cpp_app
     mkdir build
     cd build
-    cmake -G "Unix Makefiles" ../ -DCBLOSC_ROOT=/some/path -DCMAKE_INSTALL_PREFIX=/some/path
+    cmake -G "Unix Makefiles" ../ -DBOOST_ROOT=/some/path -DAGS_EXAMPLE_CPP_LIB_ROOT=/some/path -DCMAKE_INSTALL_PREFIX=/some/path
     make
     make install
 
 You will now have the following files installed::
 
-    /some/path/include/activision_game_science/*.h
-    /some/path/lib/libags_blosc_wrapper.so
-    /some/path/lib/libags_blosc_wrapper_static.a
+    /some/path/bin/ags_blosc_compress
+    /some/path/bin/ags_blosc_decompress
 
 
 License

@@ -160,16 +160,16 @@ int main(int argc, char * argv[])
     activision_game_science::BloscWrapper b = activision_game_science::BloscWrapper();
 
 
-    // allocate enough memory for compressed buffer
-    size_t dstsize = b.reserveNeededToCompress(srcsize);
+    // allocate enough memory for decompressed buffer
+    size_t dstsize = b.reserveNeededToDecompress(&src[0]);
     std::cout << "Reserving " << dstsize << " bytes" << std::endl;
     std::vector<char> dst = std::vector<char>(dstsize);
 
 
-    // compress and resize
-    dstsize = b.compress(&src[0], srcsize, &dst[0], dstsize);
+    // decompress and resize
+    dstsize = b.decompress(&src[0], &dst[0], dstsize);
     dst.resize(dstsize);
-    std::cout << "Compressed to " << dstsize << " bytes" << std::endl;
+    std::cout << "Decompressed to " << dstsize << " bytes" << std::endl;
 
 
     // write compressed stream out

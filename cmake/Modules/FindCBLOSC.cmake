@@ -1,16 +1,17 @@
-# - Find ags_example_cpp_library
+# - Find c-blosc
+# Find the native c-blosc includes and library.
 #
 # Pass in the following variables
 #
-#  AGS_EXAMPLE_CPP_LIB_ROOT             - a hint where to find c-blosc (can be an ENV var)
+#  CBLOSC_ROOT             - a hint where to find c-blosc (can be an ENV var)
 #
 # Once done this will define
 
-#  AGS_EXAMPLE_CPP_LIB_FOUND          - True if found.
-#  AGS_EXAMPLE_CPP_LIB_INCLUDE_DIRS   - where to find includes
-#  AGS_EXAMPLE_CPP_LIB_STATIC_LIBRARIES      - List of static libraries to link against
-#  AGS_EXAMPLE_CPP_LIB_LIBRARIES      - List of shared libraries to link against
-#  AGS_EXAMPLE_CPP_LIB_DLLS           - DLLs/shared libs required at runtime
+#  CBLOSC_FOUND          - True if found.
+#  CBLOSC_INCLUDE_DIRS   - where to find includes
+#  CBLOSC_STATIC_LIBRARIES      - List of static libraries to link against
+#  CBLOSC_LIBRARIES      - List of shared libraries to link against
+#  CBLOSC_DLLS           - DLLs/shared libs required at runtime
 #
 #=============================================================================
 # Copyright 2015 Spencer Stirling
@@ -25,15 +26,15 @@
 # (To distribute this file outside of CMake, substitute the full
 #  License text for the above reference.)
 
-if (NOT AGS_EXAMPLE_CPP_LIB_ROOT)
-    set (AGS_EXAMPLE_CPP_LIB_ROOT  $ENV{AGS_EXAMPLE_CPP_LIB_ROOT})
+if (NOT CBLOSC_ROOT)
+    set (CBLOSC_ROOT  $ENV{CBLOSC_ROOT})
 endif ()
 
 # find include dir
-find_path(AGS_EXAMPLE_CPP_LIB_INCLUDE_DIR 
-          NAMES activision_game_science/blosc_wrapper.h
+find_path(CBLOSC_INCLUDE_DIR 
+          NAMES blosc.h
           HINTS
-          "${AGS_EXAMPLE_CPP_LIB_ROOT}"
+          "${CBLOSC_ROOT}"
           PATH_SUFFIXES include)
 
 # find library to link against
@@ -62,36 +63,36 @@ else ()
   # find static lib first
   set (CMAKE_FIND_LIBRARY_SUFFIXES_KEEP  ${CMAKE_FIND_LIBRARY_SUFFIXES})
   set (CMAKE_FIND_LIBRARY_SUFFIXES ".a")
-  find_library(AGS_EXAMPLE_CPP_LIB_STATIC_LIBRARY  
-               NAMES  ags_blosc_wrapper_static
+  find_library(CBLOSC_STATIC_LIBRARY  
+               NAMES  blosc
                HINTS
-               "${AGS_EXAMPLE_CPP_LIB_ROOT}"
+               "${CBLOSC_ROOT}"
                PATH_SUFFIXES  lib)
   set (CMAKE_FIND_LIBRARY_SUFFIXES  ${CMAKE_FIND_LIBRARY_SUFFIXES_KEEP})
 
   # now find shared lib
-  find_library(AGS_EXAMPLE_CPP_LIB_LIBRARY  
-               NAMES  ags_blosc_wrapper
+  find_library(CBLOSC_LIBRARY  
+               NAMES  blosc
                HINTS
-               "${AGS_EXAMPLE_CPP_LIB_ROOT}"
+               "${CBLOSC_ROOT}"
                PATH_SUFFIXES  lib)
 
 endif ()
 
 
-mark_as_advanced(AGS_EXAMPLE_CPP_LIB_STATIC_LIBRARY AGS_EXAMPLE_CPP_LIB_LIBRARY AGS_EXAMPLE_CPP_LIB_INCLUDE_DIR)
+mark_as_advanced(CBLOSC_STATIC_LIBRARY CBLOSC_LIBRARY CBLOSC_INCLUDE_DIR)
 
 
-# handle the QUIETLY and REQUIRED arguments and set AGS_EXAMPLE_CPP_LIB_FOUND to TRUE if
+# handle the QUIETLY and REQUIRED arguments and set CBLOSC_FOUND to TRUE if
 # all listed variables are TRUE
 include(FindPackageHandleStandardArgs)
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(AGS_EXAMPLE_CPP_LIB REQUIRED_VARS AGS_EXAMPLE_CPP_LIB_STATIC_LIBRARY AGS_EXAMPLE_CPP_LIB_LIBRARY AGS_EXAMPLE_CPP_LIB_INCLUDE_DIR)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(CBLOSC REQUIRED_VARS CBLOSC_STATIC_LIBRARY CBLOSC_LIBRARY CBLOSC_INCLUDE_DIR)
 
 
-if(AGS_EXAMPLE_CPP_LIB_FOUND)
-    set(AGS_EXAMPLE_CPP_LIB_INCLUDE_DIRS ${AGS_EXAMPLE_CPP_LIB_INCLUDE_DIR})
-    set(AGS_EXAMPLE_CPP_LIB_STATIC_LIBRARIES ${AGS_EXAMPLE_CPP_LIB_STATIC_LIBRARY})
-    set(AGS_EXAMPLE_CPP_LIB_LIBRARIES ${AGS_EXAMPLE_CPP_LIB_LIBRARY})
+if(CBLOSC_FOUND)
+    set(CBLOSC_INCLUDE_DIRS ${CBLOSC_INCLUDE_DIR})
+    set(CBLOSC_STATIC_LIBRARIES ${CBLOSC_STATIC_LIBRARY})
+    set(CBLOSC_LIBRARIES ${CBLOSC_LIBRARY})
     # find DLLS, if necessary
     if (WIN32)
         #FIXME
@@ -103,7 +104,7 @@ if(AGS_EXAMPLE_CPP_LIB_FOUND)
                   "$ENV{PROGRAMFILES}/zlib"          
                   PATH_SUFFIXES  bin  lib)
     else ()
-        set (AGS_EXAMPLE_CPP_LIB_DLLS  ${AGS_EXAMPLE_CPP_LIB_LIBRARIES})
+        set (CBLOSC_DLLS  ${CBLOSC_LIBRARIES})
     endif ()
 endif()
 
