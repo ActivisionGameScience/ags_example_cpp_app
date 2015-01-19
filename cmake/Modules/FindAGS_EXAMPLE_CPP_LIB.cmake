@@ -31,7 +31,7 @@ endif ()
 
 # find include dir
 find_path(AGS_EXAMPLE_CPP_LIB_INCLUDE_DIR 
-          NAMES ags_blosc_wrapper.h
+          NAMES activision_game_science/ags_blosc_wrapper.h
           HINTS
           "${AGS_EXAMPLE_CPP_LIB_ROOT}"
           PATH_SUFFIXES include)
