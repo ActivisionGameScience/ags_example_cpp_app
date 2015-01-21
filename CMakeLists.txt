@@ -43,14 +43,6 @@ message (STATUS  "CBLOSC SHARED LIB: ${AGS_EXAMPLE_CPP_LIB_LIBRARIES}")
 set (DLLS_to_install  ${DLLS_to_install}  ${AGS_EXAMPLE_CPP_LIB_DLLS})
 
 
-# find c-blosc (set hint CBLOSC_ROOT)
-find_package(CBLOSC  REQUIRED)
-include_directories(${CBLOSC_INCLUDE_DIR})
-message (STATUS  "CBLOSC DLLS: ${CBLOSC_DLLS}")
-message (STATUS  "CBLOSC SHARED LIB: ${CBLOSC_LIBRARIES}")
-set (DLLS_to_install  ${DLLS_to_install}  ${CBLOSC_DLLS})
-
-
 # find Boost (set hint BOOST_ROOT)
 set (Boost_USE_STATIC_LIBS  OFF)
 set (Boost_USE_STATIC_RUNTIME  OFF)  # this should always be set to OFF
